@@ -1,0 +1,83 @@
+/* From Uiverse.io by gharsh11032000 */
+.loginbtn {
+    cursor: pointer;
+    position: relative;
+    padding: 0px 20px;
+    font-size: 18px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+}
+
+.loginbtn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: white;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.loginbtn:hover::before {
+    scale: 3;
+}
+
+.loginbtn:hover {
+    color: #212121;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(193, 163, 98, 0.4);
+}
+
+.loginbtn:active {
+    scale: 1;
+}
+
+
+.logoutbtn {
+    --width: 100px;
+    --timing: 2s;
+    border: 0;
+    width: var(--width);
+    padding-block: 0.5em;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1em;
+    background: rgb(64, 192, 87);
+    transition: all 0.2s;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.logoutbtn:hover {
+    background-image: linear-gradient(to right,
+            rgb(250, 82, 82),
+            rgb(250, 82, 82) 16.65%,
+            rgb(190, 75, 219) 16.65%,
+            rgb(190, 75, 219) 33.3%,
+            rgb(76, 110, 245) 33.3%,
+            rgb(76, 110, 245) 49.95%,
+            rgb(64, 192, 87) 49.95%,
+            rgb(64, 192, 87) 66.6%,
+            rgb(250, 176, 5) 66.6%,
+            rgb(250, 176, 5) 83.25%,
+            rgb(253, 126, 20) 83.25%,
+            rgb(253, 126, 20) 100%,
+            rgb(250, 82, 82) 100%);
+    animation: var(--timing) linear dance6123 infinite;
+    transform: scale(1.1) translateY(-1px);
+}
+
+@keyframes dance6123 {
+    to {
+        background-position: var(--width);
+    }
+}

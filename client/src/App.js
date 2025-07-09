@@ -53,7 +53,7 @@ function AppRoutes() {
       setUser(null);
       return;
     }
-    fetch("https://something-jbnx.onrender.com/api/user", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -62,7 +62,7 @@ function AppRoutes() {
   }, [token]);
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://something-jbnx.onrender.com/auth/google";
+    window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
     navigate("/home");
   };
 
