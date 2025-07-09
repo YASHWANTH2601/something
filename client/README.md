@@ -65,4 +65,3 @@ src/
 
 ---
 
-For any issues, please contact the maintainer. 

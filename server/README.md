@@ -207,4 +207,3 @@ PORT=5000 # Optional, defaults to 5000
 
 ---
 
-For any issues, please contact the maintainer. 
