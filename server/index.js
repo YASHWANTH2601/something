@@ -61,8 +61,7 @@ app.get('/api/user', authenticateJWT, (req, res) => {
   res.json({ user: req.user });
 });
 
-// In-memory user store (for demo)
-const users = [];
+
 
 app.use(express.json());
 
@@ -113,7 +112,9 @@ app.post('/login', async (req, res) => {
   }
   
 });
-
+app.get('/',(req,res)=>{
+  res.send("Hello World");
+})
 const PORT = process.env.PORT || 5000;
 const start = async () => { 
     try {
