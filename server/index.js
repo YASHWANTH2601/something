@@ -4,38 +4,29 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const connectDB = require('./config/db');
+const authRouter = require('./router/authRouter');
 const app = express();
-const User = require('./model/user');
+const authenticate = require('./middleware/authenticate');
 // CORS setup for local dev
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }));
 
+app.use('/api/auth', authRouter);
+
+
 // Passport config
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback',
-}, (accessToken, refreshToken, profile, done) => {
+}, (profile, done) => {
   return done(null, profile);
 }));
 
 app.use(passport.initialize());
-
-// JWT middleware
-function authenticateJWT(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  if (!authHeader) return res.status(401).json({ error: 'No token' });
-  const token = authHeader.split(' ')[1];
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ error: 'Invalid token' });
-    req.user = user;
-    next();
-  });
-}
 
 // Auth routes
 app.get('/auth/google',
@@ -57,7 +48,7 @@ app.get('/auth/google/callback',
   }
 );
 
-app.get('/api/user', authenticateJWT, (req, res) => {
+app.get('/api/user', authenticate, (req, res) => {
   res.json({ user: req.user });
 });
 
@@ -65,56 +56,11 @@ app.get('/api/user', authenticateJWT, (req, res) => {
 
 app.use(express.json());
 
-app.post('/signup', async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
-  try {
-    // Check if user already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(409).json({ error: 'User already exists' });
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new user
-    const newUser = new User({ username, password: hashedPassword });
-    await newUser.save();
-
-    // Issue JWT
-    const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-
-});
-
-
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
-
-  try {
-    const user = await User.findOne({ username });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
-
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) return res.status(401).json({ error: 'Invalid credentials' });
-
-    // Issue JWT
-    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-  
-});
 app.get('/',(req,res)=>{
   res.send("Hello World");
 })
+
 const PORT = process.env.PORT || 5000;
 const start = async () => { 
     try {
@@ -126,4 +72,5 @@ const start = async () => {
         console.log(error);
     }
 };
+
 start();

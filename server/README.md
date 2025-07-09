@@ -5,11 +5,13 @@ This is the backend server for the application, built with Node.js and Express.
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v14 or above recommended)
 - npm (comes with Node.js)
 - MongoDB (local or cloud instance)
 
 ### Installation
+
 1. Navigate to the `server` directory:
    ```bash
    cd server
@@ -20,17 +22,22 @@ This is the backend server for the application, built with Node.js and Express.
    ```
 
 ### Configuration
+
 - Database configuration is located in `config/db.js`.
 - Update the MongoDB connection string as needed.
 
 ### Running the Server
+
 To start the server:
+
 ```bash
 npm start
 ```
+
 The server will run on [http://localhost:5000](http://localhost:5000) by default.
 
 ### Available Scripts
+
 - `npm start` - Starts the server.
 - `npm run dev` - Starts the server with nodemon for development (if configured).
 
@@ -38,18 +45,30 @@ The server will run on [http://localhost:5000](http://localhost:5000) by default
 
 ```
 server/
-├── config/
-│   └── db.js           # MongoDB connection logic
-├── model/
-│   └── user.js         # Mongoose user model
-├── index.js            # Main server file (API routes)
-├── package.json        # Project metadata and scripts
-├── package-lock.json   # Dependency lock file
-└── README.md           # This file
+├─ config/
+│  └─ db.js              # MongoDB connection logic
+├─ controller/
+│  └─ authController.js  # Authintication Logic
+├─ middleware/
+│  └─ authenticate.js    # Middleware logic
+├─ model/
+│  └─ user.js            # Mongoose user model
+├─ router/
+│  └─ authRouter.js      # API router
+├─ .env
+├─ .gitignore
+├─ index.js              # Main server file
+├─ package-lock.json     # Dependency lock file
+├─ package.json          # Project metadata and scripts
+└─ README.md             # This file
 ```
 
 ### Directory Descriptions
+
 - `config/` - Configuration files (e.g., database connection)
+- `controller/` - authontication Logi (e.g., Login Signup)
+- `middleware/` - Middleware logic
+- `router/` - API router endpoints
 - `model/` - Mongoose models (e.g., User)
 - `index.js` - Main Express server and API endpoints
 
@@ -58,6 +77,7 @@ server/
 ### Authentication & User Endpoints
 
 #### 1. Google OAuth
+
 - **GET `/auth/google`**
   - Redirects to Google for authentication.
 - **GET `/auth/google/callback`**
@@ -66,11 +86,16 @@ server/
   - **Failure:** Redirects to `/start` page on frontend.
 
 #### 2. Get Authenticated User
+
 - **GET `/api/user`**
   - **Headers:** `Authorization: Bearer <JWT>`
   - **Success Response:**
     ```json
-    { "user": { /* user info from JWT */ } }
+    {
+      "user": {
+        /* user info from JWT */
+      }
+    }
     ```
   - **Failure Response:**
     - `401 Unauthorized` if no token
@@ -81,6 +106,7 @@ server/
     ```
 
 #### 3. User Signup
+
 - **POST `/signup`**
   - **Body:**
     ```json
@@ -105,6 +131,7 @@ server/
       ```
 
 #### 4. User Login
+
 - **POST `/login`**
   - **Body:**
     ```json
@@ -148,62 +175,3 @@ PORT=5000 # Optional, defaults to 5000
 - `PORT`: (Optional) Port for the server to run on
 
 ---
-
-## Example Postman API Calls
-
-### 1. User Signup
-**POST** `http://localhost:5000/signup`
-- **Body (JSON):**
-```json
-{
-  "username": "testuser",
-  "password": "testpassword"
-}
-```
-- **Success Response:**
-```json
-{
-  "token": "<JWT>"
-}
-```
-
-### 2. User Login
-**POST** `http://localhost:5000/login`
-- **Body (JSON):**
-```json
-{
-  "username": "testuser",
-  "password": "testpassword"
-}
-```
-- **Success Response:**
-```json
-{
-  "token": "<JWT>"
-}
-```
-
-### 3. Get Authenticated User
-**GET** `http://localhost:5000/api/user`
-- **Headers:**
-  - `Authorization: Bearer <JWT>`
-- **Success Response:**
-```json
-{
-  "user": {
-    "id": "...",
-    "username": "testuser"
-    // ...other fields
-  }
-}
-```
-
-### 4. Google OAuth
-**GET** `http://localhost:5000/auth/google`
-- Redirects to Google for authentication.
-
-**GET** `http://localhost:5000/auth/google/callback`
-- Handles Google OAuth callback. On success, redirects to frontend with JWT token in URL.
-
----
-
