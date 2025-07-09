@@ -34,7 +34,7 @@ const Navbar = ({ user, onLoginClick, onLogoutClick }) => {
             </Link>
 
             <span>{user.displayName}</span>
-            <button onClick={onLogoutClick} className="ms-2">
+            <button onClick={onLogoutClick} className="ms-2 btn btn-light">
               Logout
             </button>
           </div>

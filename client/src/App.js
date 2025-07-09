@@ -53,7 +53,7 @@ function AppRoutes() {
       setUser(null);
       return;
     }
-    fetch("http://localhost:5000/api/user", {
+    fetch("https://something-jbnx.onrender.com/api/user", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -62,7 +62,7 @@ function AppRoutes() {
   }, [token]);
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/google";
+    window.location.href = "https://something-jbnx.onrender.com/auth/google";
     navigate("/home");
   };
 

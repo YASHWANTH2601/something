@@ -12,7 +12,7 @@ const LoginModal = ({ open, onClose, onGoogleLogin }) => {
     if (!username || !password || !confirm) return setError('All fields required');
     if (password !== confirm) return setError('Passwords do not match');
     try {
-      const res = await fetch('http://localhost:5000/signup', {
+      const res = await fetch('https://something-jbnx.onrender.com/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -32,7 +32,7 @@ const LoginModal = ({ open, onClose, onGoogleLogin }) => {
   const handleLogin = async () => {
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/login', {
+      const res = await fetch('https://something-jbnx.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

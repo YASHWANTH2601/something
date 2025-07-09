@@ -130,4 +130,81 @@ server/
 
 ---
 
+## Environment Variables
+
+Create a `.env` file in the `server/` directory with the following structure:
+
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+PORT=5000 # Optional, defaults to 5000
+```
+
+- `MONGO_URI`: MongoDB connection string (local or cloud)
+- `JWT_SECRET`: Secret key for signing JWT tokens
+- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`: Credentials for Google OAuth
+- `PORT`: (Optional) Port for the server to run on
+
+---
+
+## Example Postman API Calls
+
+### 1. User Signup
+**POST** `http://localhost:5000/signup`
+- **Body (JSON):**
+```json
+{
+  "username": "testuser",
+  "password": "testpassword"
+}
+```
+- **Success Response:**
+```json
+{
+  "token": "<JWT>"
+}
+```
+
+### 2. User Login
+**POST** `http://localhost:5000/login`
+- **Body (JSON):**
+```json
+{
+  "username": "testuser",
+  "password": "testpassword"
+}
+```
+- **Success Response:**
+```json
+{
+  "token": "<JWT>"
+}
+```
+
+### 3. Get Authenticated User
+**GET** `http://localhost:5000/api/user`
+- **Headers:**
+  - `Authorization: Bearer <JWT>`
+- **Success Response:**
+```json
+{
+  "user": {
+    "id": "...",
+    "username": "testuser"
+    // ...other fields
+  }
+}
+```
+
+### 4. Google OAuth
+**GET** `http://localhost:5000/auth/google`
+- Redirects to Google for authentication.
+
+**GET** `http://localhost:5000/auth/google/callback`
+- Handles Google OAuth callback. On success, redirects to frontend with JWT token in URL.
+
+---
+
 For any issues, please contact the maintainer. 
