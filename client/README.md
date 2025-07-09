@@ -31,10 +31,33 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 - `npm run build` - Builds the app for production.
 - `npm run eject` - Ejects the app configuration (not reversible).
 
-### Project Structure
-- `src/` - Source code
-  - `components/` - React components
-  - `protectedRoute/` - Protected route logic
+## Project Structure
+
+```
+src/
+├── App.css                # Main app styles
+├── App.js                 # Main app component
+├── App.test.js            # App tests
+├── components/
+│   ├── LoginModel/
+│   │   └── LoginModal.js  # Login modal component
+│   └── Navbar/
+│       └── Navbar.js      # Navigation bar component
+├── index.css              # Global styles
+├── index.js               # Entry point
+├── protectedRoute/
+│   └── ProtectedRoute.js  # Route protection logic
+├── reportWebVitals.js     # Performance measuring
+├── service-worker.js      # Service worker
+├── serviceWorkerRegistration.js # Service worker registration
+└── setupTests.js          # Test setup
+```
+
+### Directory Descriptions
+- `components/` - Contains reusable UI components (e.g., Navbar, LoginModal)
+- `protectedRoute/` - Logic for protecting routes (authentication)
+- `App.js` - Main application logic
+- `index.js` - Entry point for React app
 
 ### Notes
 - Make sure the backend server is running for API requests.

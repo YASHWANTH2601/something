@@ -34,13 +34,99 @@ The server will run on [http://localhost:5000](http://localhost:5000) by default
 - `npm start` - Starts the server.
 - `npm run dev` - Starts the server with nodemon for development (if configured).
 
-### Project Structure
-- `model/` - Mongoose models
-- `config/` - Configuration files
+## Project Structure
 
-### Notes
-- Ensure MongoDB is running before starting the server.
-- The server exposes RESTful APIs for the client frontend.
+```
+server/
+├── config/
+│   └── db.js           # MongoDB connection logic
+├── model/
+│   └── user.js         # Mongoose user model
+├── index.js            # Main server file (API routes)
+├── package.json        # Project metadata and scripts
+├── package-lock.json   # Dependency lock file
+└── README.md           # This file
+```
+
+### Directory Descriptions
+- `config/` - Configuration files (e.g., database connection)
+- `model/` - Mongoose models (e.g., User)
+- `index.js` - Main Express server and API endpoints
+
+## API Documentation
+
+### Authentication & User Endpoints
+
+#### 1. Google OAuth
+- **GET `/auth/google`**
+  - Redirects to Google for authentication.
+- **GET `/auth/google/callback`**
+  - Handles Google OAuth callback.
+  - **Success:** Redirects to frontend with JWT token in URL.
+  - **Failure:** Redirects to `/start` page on frontend.
+
+#### 2. Get Authenticated User
+- **GET `/api/user`**
+  - **Headers:** `Authorization: Bearer <JWT>`
+  - **Success Response:**
+    ```json
+    { "user": { /* user info from JWT */ } }
+    ```
+  - **Failure Response:**
+    - `401 Unauthorized` if no token
+    - `403 Forbidden` if invalid token
+    ```json
+    { "error": "No token" }
+    { "error": "Invalid token" }
+    ```
+
+#### 3. User Signup
+- **POST `/signup`**
+  - **Body:**
+    ```json
+    { "username": "string", "password": "string" }
+    ```
+  - **Success Response:**
+    ```json
+    { "token": "<JWT>" }
+    ```
+  - **Failure Responses:**
+    - `400 Bad Request` if missing fields
+      ```json
+      { "error": "Username and password required" }
+      ```
+    - `409 Conflict` if user exists
+      ```json
+      { "error": "User already exists" }
+      ```
+    - `500 Internal Server Error` for server/database issues
+      ```json
+      { "error": "Server error" }
+      ```
+
+#### 4. User Login
+- **POST `/login`**
+  - **Body:**
+    ```json
+    { "username": "string", "password": "string" }
+    ```
+  - **Success Response:**
+    ```json
+    { "token": "<JWT>" }
+    ```
+  - **Failure Responses:**
+    - `400 Bad Request` if missing fields
+      ```json
+      { "error": "Username and password required" }
+      ```
+    - `401 Unauthorized` if credentials are invalid
+      ```json
+      { "error": "Invalid credentials" }
+      ```
+    - `500 Internal Server Error` for server/database issues
+      ```json
+      { "error": "Server error" }
+      ```
 
 ---
 
